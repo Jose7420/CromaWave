@@ -20,8 +20,7 @@ class CarritoFactory extends Factory
         return [
             'nombre' => $this->faker->word,
             'descripcion' => $this->faker->text,
-            'propietario' => $this->faker->boolean()
-
+            'propietario' => \App\Models\User::factory(),
 
 
         ];

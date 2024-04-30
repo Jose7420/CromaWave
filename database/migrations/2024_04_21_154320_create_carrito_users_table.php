@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('carrito_user', function (Blueprint $table) {
             $table->id();
-            $table->boolean('propetario');
+            //$table->boolean('propetario');
             $table->foreignId('carrito_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();

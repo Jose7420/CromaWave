@@ -45,13 +45,6 @@ class User extends Authenticatable
         ];
     }
 
-     // Relación uno a muchos
-    // Un usuario puede tener muchos carritos
-    public function carrito()
-    {
-        return $this->hasMany(Carrito::class);
-    }
-
 
     // Relación muchos a muchos
     // Un usuario puede tener muchos productos
@@ -59,4 +52,6 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Carrito::class);
     }
+
+
 }

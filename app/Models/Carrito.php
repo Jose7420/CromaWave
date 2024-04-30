@@ -11,12 +11,9 @@ class Carrito extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'description',
+        'nombre',
+        'descripcion',
         'propietario'
-
-
-
     ];
 
     public function users(){
@@ -24,8 +21,12 @@ class Carrito extends Model
     }
 
     public function productos(){
-        return $this->belongsToMany(Producto::class, 'carrito_producto');
+        return $this->belongsToMany(Producto::class, 'carrito_productos');
     }
 
+    // metodo para obtener el usuario propietario del carrito
+    public function propietario(){
+        return $this->belongsTo(User::class, 'propietario');
+    }
 
 }

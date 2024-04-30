@@ -92,23 +92,13 @@ class UserController extends Controller
 
     public function show($id)
     {
-        $user = User::find($id);
+       $user = User::find($id);
 
-        if (!$user) {
-            $data = [
-                'status' => 404,
-                'message' => 'User not found'
-            ];
-            return response()->json($data, 404);
-        }
+       // retorna el usuario con sus carritos y los datos del propietario.
+       return $user ? new UserResource($user->loadMissing('carritos')->loadMissing('carritos.propietario'))
+       : response()->json(['status'=> 404,'message' => 'User not found'], 404);
 
-        $data = [
-            'user' => $user,
-            'status' => 200,
-            'message' => 'User retrieved successfully'
-        ];
 
-        return response()->json($data, 200);
     }
 
     public function update(Request $request, $id)
@@ -123,21 +113,6 @@ class UserController extends Controller
             return response()->json($data, 404);
         }
 
-        // $validator = Validator::make($request->all(), [
-
-        //     'email' => 'email',
-
-        // ]);
-
-        // if ($validator->fails()) {
-
-        //     $data = [
-        //         'status' => 400,
-        //         'message' => 'Validation error',
-        //         'error' => $validator->errors()
-        //     ];
-        //     return response()->json($data, 400);
-        // }
 
         if ($request->has('name')) {
             $user->name = $request->name;

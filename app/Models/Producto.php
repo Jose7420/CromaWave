@@ -20,7 +20,7 @@ class Producto extends Model
     ];
 
     public function carritos(){
-        return $this->belongsToMany(Carrito::class, 'carrito_producto');
+        return $this->belongsToMany(Carrito::class, 'carrito_productos');
     }
 
 }

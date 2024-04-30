@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('nombre');
             $table->string('descripcion');
-            $table->boolean('propietario');
-
+            $table->unsignedBigInteger('propietario');
+            $table->foreign('propietario')->references('id')->on('users');
             $table->timestamps();
         });
     }
