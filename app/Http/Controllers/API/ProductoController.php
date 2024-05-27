@@ -19,7 +19,7 @@ class ProductoController extends Controller
         $queryItems = $filtre->transform($request);
         $productos = Producto::where($queryItems);
 
-        return new ProductoResource($productos->paginate()->appends($request->query()));
+        return new ProductoResource($productos->paginate(12)->appends($request->query()));
     }
 
     public function store(Request $request)
@@ -32,6 +32,7 @@ class ProductoController extends Controller
     public function show(Producto $producto)
     {
 
+        // crear una nueva instancia de ProductoResource y pasarle el producto y cargar los carritos relacionados.
         return new ProductoResource($producto->loadMissing('carritos'));
     }
 
@@ -43,8 +44,11 @@ class ProductoController extends Controller
             return response()->json(['message' => 'No productos found'], 200);
         }
 
+        // recoger el metodo de la peticion
         $method = $request->method();
 
+        // comprobar el metodo recogido de la peticion y comprobar si es PUT o PATCH
+        // y validar los campos.
         if ($method === 'PUT') {
 
             $validator = Validator::make($request->all(), [
@@ -65,13 +69,17 @@ class ProductoController extends Controller
             ]);
         }
 
+        // comprobar si la validacion falla y devolver un mensaje de error
         if ($validator->fails()) {
             return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 400);
         }
-
+        // actualizar el producto
         $producto->update($request->all());
+
+        // devolver un mensaje de exito.
         return response()->json(['message' => 'Producto updated successfully'], 200);
     }
+
 
     public function destroy(string $id)
     {
