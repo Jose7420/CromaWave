@@ -30,6 +30,10 @@ class Carrito_producto extends Model
         return $this->belongsTo(Producto::class);
     }
 
+    public function carrito()
+    {
+        return $this->belongsTo(Carrito::class);
+    }
 
 
 }

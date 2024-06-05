@@ -1,9 +1,20 @@
 <?php
 
+use App\Http\Controllers\API\CarritoController;
+use App\Http\Controllers\API\CarritoProductoController;
+use App\Http\Controllers\API\ProductoController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+
+// Route::get('/', function () {
+//     return ['Laravel' => app()->version()];
+// });
+
+// require __DIR__.'/auth.php';
+
+
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -24,4 +35,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+Route::resource('productos', ProductoController::class, ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy'])
+    ->middleware('auth:sanctum');
+Route::resource('carrito_producto', CarritoProductoController::class, ['index', 'store', 'show', 'update', 'destroy'])
+    ->middleware('auth:sanctum');
+
+Route::resource('carritos', CarritoController::class, ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy'])
+    ->middleware('auth:sanctum');
+
+require __DIR__ . '/auth.php';

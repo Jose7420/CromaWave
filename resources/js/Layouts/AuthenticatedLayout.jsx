@@ -17,6 +17,7 @@ export default function Authenticated({ user, header, children }) {
                             <div className="shrink-0 flex items-center">
                                 <Link href="/">
                                     <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800" />
+
                                 </Link>
                             </div>
 
@@ -25,6 +26,18 @@ export default function Authenticated({ user, header, children }) {
                                     Dashboard
                                 </NavLink>
                             </div>
+                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                                <NavLink href={route('productos.index')} active={route().current('productos.index')}>
+                                    Productos
+                                </NavLink>
+                            </div>
+                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                                <NavLink href={route('carritos.index')} active={route().current('carritos.index')}>
+                                    Carritos
+                                </NavLink>
+                            </div>
+
+
                         </div>
 
                         <div className="hidden sm:flex sm:items-center sm:ms-6">
@@ -96,7 +109,16 @@ export default function Authenticated({ user, header, children }) {
                             Dashboard
                         </ResponsiveNavLink>
                     </div>
-
+                    <div className="pt-2 pb-3 space-y-1">
+                        <ResponsiveNavLink href={route('productos.index')} active={route().current('productos.index')}>
+                            Productos
+                        </ResponsiveNavLink>
+                    </div>
+                    <div className="pt-2 pb-3 space-y-1">
+                        <ResponsiveNavLink href={route('carritos.index')} active={route().current('carritos.index')}>
+                            Carritos
+                        </ResponsiveNavLink>
+                    </div>
                     <div className="pt-4 pb-1 border-t border-gray-200">
                         <div className="px-4">
                             <div className="font-medium text-base text-gray-800">{user.name}</div>
