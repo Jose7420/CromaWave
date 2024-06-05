@@ -54,5 +54,9 @@ class User extends Authenticatable
         return $this->belongsToMany(Carrito::class);
     }
 
+    public function propietario()
+    {
+        return $this->hasMany(Carrito::class, 'propietario');
+    }
 
 }

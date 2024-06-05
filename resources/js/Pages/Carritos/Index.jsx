@@ -11,7 +11,7 @@ import Modal from "@/Components/Modal";
 
 const Index = ({ auth, carritos }) => {
     console.log(carritos.current_page);
-    // console.log(carritos.data[0].pivot[0].carrito_id);
+    console.log(carritos);
 
     const [currentPage, setCurrentPage] = useState(carritos.current_page);
     const [modal, setModal] = useState(false);

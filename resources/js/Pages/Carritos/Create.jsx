@@ -6,16 +6,16 @@ import PrimaryButton from "@/Components/PrimaryButton";
 const Create = ({ auth }) => {
 
     const { data, setData, post, processing, reset, errors } = useForm({
-        id: "",
+
         nombre: "",
-        id_carrito: "",
-        id_user: "",
+        descripcion: "",
+        propietario: auth.user.id,
     });
 
     const submit = (e) => {
         e.preventDefault();
         console.log(data);
-      post('/carritosusers');
+        post('/carritos');
 
 
     };
@@ -44,20 +44,6 @@ const Create = ({ auth }) => {
                                         onChange={(e) => setData("nombre", e.target.value)}
                                     />
                                     <InputError error={errors.nombre} />
-                                </div>
-
-                                <div className="mb-4">
-                                    <label htmlFor="id_carrito" className="block text-sm font-medium text-gray-700">
-                                        intificador del carrito
-                                    </label>
-                                    <input
-                                        id="id_carrito"
-                                        type="text"
-                                        className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                        value={data.id_carrito}
-                                        onChange={(e) => setData("id_carrito", e.target.value)}
-                                    />
-                                    <InputError error={errors.id_carrito} />
                                 </div>
 
                                 <div className="mb-4">

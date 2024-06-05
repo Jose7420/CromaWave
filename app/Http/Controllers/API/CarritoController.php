@@ -21,24 +21,29 @@ class CarritoController extends Controller
      */
     public function index(Request $request)
     {
-        $usuario = Auth::user();
+
         $filtre = new CarritoFiltre();
         $queryItems = $filtre->transform($request);
-        // $carritos = Carrito::where($queryItems);
 
-        $carritos = $usuario->carritos;
 
-        return Inertia::render(
-            'Carritos/Index',
-            [
-                'carritos' => new CarritoResource($carritos)
 
+        $carritosPropietario = Auth::user()->propietario;
+        $carritosAcceso = Auth::user()->carritos;
+
+        // Fusionar las colecciones
+        $carritos = $carritosPropietario->concat($carritosAcceso);
+
+        return Inertia::render('Carritos/Index', [
+            'carritos' => CarritoResource::collection($carritos)
         ]);
-        return new CarritoResource($carritos->paginate()->appends($request->query())->loadMissing('productos')->loadMissing('users')->loadMissing('propietario'));
 
-        // return Inertia::render('Carritos/Index', [
-        //     'carritos' => new CarritoResource($carritos->where($usuario->id = 'id_us'))->paginate(8)->appends($request->query()))
-        // ]);
+
+    }
+
+
+    public function create()
+    {
+        return Inertia::render('Carritos/Create');
     }
 
     /**
@@ -59,7 +64,7 @@ class CarritoController extends Controller
     public function show(Carrito $carrito)
     {
         $carrito = Carrito::find($carrito->id);
-        if(!$carrito){
+        if (!$carrito) {
             return response()->json(['message' => 'No carritos found'], 200);
         }
         // retorna el carrito con los productos y los usuarios y los datos del propietario.

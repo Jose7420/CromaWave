@@ -4,7 +4,9 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 
 
 const Show = ({ auth, carrito }) => {
-    console.table(carrito.data);
+    console.log("dentro de show carrito");
+    console.log(carrito.data);
+    console.log(carrito.data.nombre);
 
     return (
         <AuthenticatedLayout
