@@ -32,7 +32,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 // Route::apiResource('user', UserController::class);//->middleware('auth:sanctum');
 // Route::apiResource('carrito', CarritoController::class)->middleware('auth:sanctum');
 // Route::apiResource('producto', ProductoController::class);
-Route::apiResource('carrito_user', CarritoUserController::class);//->middleware('auth:sanctum');
+// Route::apiResource('carrito_user', CarritoUserController::class);//->middleware('auth:sanctum');
 // Route::apiResource('carrito_producto', CarritoProductoController::class)->middleware('auth:sanctum');
 
 // Route::post('/login', [AuthenticatedSessionController::class, 'apiLogin']);

@@ -36,8 +36,6 @@ class CarritoController extends Controller
         return Inertia::render('Carritos/Index', [
             'carritos' => CarritoResource::collection($carritos)
         ]);
-
-
     }
 
 
@@ -55,7 +53,10 @@ class CarritoController extends Controller
 
         $carrito = Carrito::create($carrito);
 
-        return new CarritoResource($carrito);
+        // Redirigir a la ruta de carritos
+        //return redirect()->route('carritos.index');
+
+        //return new CarritoResource($carrito);
     }
 
     /**
@@ -67,11 +68,19 @@ class CarritoController extends Controller
         if (!$carrito) {
             return response()->json(['message' => 'No carritos found'], 200);
         }
+
         // retorna el carrito con los productos y los usuarios y los datos del propietario.
         // return new CarritoResource($carrito->loadMissing('productos')->loadMissing('users')->loadMissing('propietario'));
 
         return Inertia::render('Carritos/Show', [
-            'carrito' => new CarritoResource($carrito->loadMissing('productos')->loadMissing('users')->loadMissing('propietario'))
+            'carrito' => new CarritoResource(
+                $carrito
+                    ->loadMissing('carrito_productos')
+                    ->loadMissing('productos')
+                    ->loadMissing('users')
+                    ->loadMissing('propietario')
+
+            )
         ]);
     }
 

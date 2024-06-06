@@ -4,8 +4,10 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CarritoProductoResource;
+use App\Http\Resources\ProductoResource;
 use App\Models\Carrito;
 use App\Models\Carrito_producto;
+use App\Models\Producto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
@@ -32,6 +34,18 @@ class CarritoProductoController extends Controller
     }
 
 
+    public function create(Request $request)
+    {
+
+
+        return Inertia::render('Carrito_producto/Create', [
+            'producto' => new ProductoResource($request)
+        ]);
+
+        // return Inertia::render('Carrito_producto/Create', [
+        //     'producto' => $request->id
+        // ]);
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -118,6 +132,7 @@ class CarritoProductoController extends Controller
     {
 
         $carrito_producto->delete();
-        return response()->json(['message' => 'Carrito_producto deleted successfully'], 200);
+        return redirect('carritos.index');
+        // return response()->json(['message' => 'Carrito_producto deleted successfully'], 200);
     }
 }

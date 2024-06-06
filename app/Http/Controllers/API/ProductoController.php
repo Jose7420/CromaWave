@@ -37,8 +37,8 @@ class ProductoController extends Controller
         $producto = json_decode($request->getContent(), true);
         $producto = Producto::create($producto);
 
-       // return new ProductoResource($producto);
-       return redirect()->route('productos.index');
+        // return new ProductoResource($producto);
+        return redirect()->route('productos.index');
     }
 
     public function show(Producto $producto)
@@ -62,15 +62,15 @@ class ProductoController extends Controller
         ]);
     }
 
-    public function update(Request $request,$id)
+    public function update(Request $request)
     {
 
-        return response()->json($request->all(), 200);
+        // return response()->json($request->all(), 200);
         // buscar el producto por id
-        $producto = Producto::find($id);
+        $producto = Producto::find($request->id);
 
 
-        if(!$producto){
+        if (!$producto) {
             return response()->json(['message' => 'Producto no encontrado'], 200);
         }
 
@@ -90,13 +90,13 @@ class ProductoController extends Controller
 
 
         // } else {
-            $validator = Validator::make($request->all(), [
-                'nombre' => ['sometimes','required'],
-                'precio' => ['sometimes','required'],
-                'descripcion' => ['sometimes','required'],
-                'imagen' => ['sometimes','required'],
+        $validator = Validator::make($request->all(), [
+            'nombre' => ['sometimes', 'required'],
+            'precio' => ['sometimes', 'required'],
+            'descripcion' => ['sometimes', 'required'],
+            'imagen' => ['sometimes'],
 
-            ]);
+        ]);
         // }
 
         // comprobar si la validacion falla y devolver un mensaje de error
@@ -106,7 +106,10 @@ class ProductoController extends Controller
         // actualizar el producto
         $producto->update($request->all());
 
+        // Rederigir a la ruta de productos
         return redirect()->route('productos.index');
+
+
         // devolver un mensaje de exito.
         return response()->json(['message' => 'Producto updated successfully'], 200);
     }
@@ -114,12 +117,14 @@ class ProductoController extends Controller
 
     public function destroy(string $id)
     {
+
         $producto = Producto::find($id);
-        if(!$producto){
+        if (!$producto) {
             return response()->json(['message' => 'No productos found'], 200);
         }
         $producto->delete();
+
+        // Rederigir a la ruta de productos
         return redirect()->route('productos.index');
-       // return response()->json(['message' => 'Producto deleted successfully'], 200);
     }
 }

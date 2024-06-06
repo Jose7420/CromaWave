@@ -7,6 +7,7 @@ import DangerButton from "@/Components/DangerButton";
 import SecondaryButton from "@/Components/SecondaryButton";
 // import Swal from "sweetalert2";
 import Modal from "@/Components/Modal";
+import PrimaryButton from "@/Components/PrimaryButton";
 
 
 const Index = ({ auth, carritos }) => {
@@ -23,7 +24,7 @@ const Index = ({ auth, carritos }) => {
     const openModal = (id) => {
         console.log("dentro del openModal " + id);
         setModal(true);
-        setData('id',id);
+        setData('id', id);
 
     };
 
@@ -43,7 +44,7 @@ const Index = ({ auth, carritos }) => {
 
 
 
-        destroy(route('carritos.destroy',data.id), {
+        destroy(route('carritos.destroy', data.id), {
             // preserveScroll: true,
             onSuccess: () => closeModal(),
             // onFinish: () => reset(),
@@ -59,6 +60,12 @@ const Index = ({ auth, carritos }) => {
         >
             <Head title="Carritos" />
             <div className="py-12">
+                <div className="mb-9 flex justify-center obje">
+                    <PrimaryButton>
+                        <Link href={route('carritos.create')}>Agregar Carrito</Link>
+                    </PrimaryButton>
+
+                </div>
                 <div className="max-w-8xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">

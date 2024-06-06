@@ -5,8 +5,10 @@ import { useState } from "react";
 import { Inertia } from "@inertiajs/inertia";
 import DangerButton from "@/Components/DangerButton";
 import SecondaryButton from "@/Components/SecondaryButton";
+import EditButton from "@/Components/EditButton";
 // import Swal from "sweetalert2";
 import Modal from "@/Components/Modal";
+import PrimaryButton from "@/Components/PrimaryButton";
 
 
 const Index = ({ auth, productos }) => {
@@ -17,12 +19,16 @@ const Index = ({ auth, productos }) => {
     const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
     const { reset, data, setData, delete: destroy, processing, errors } = useForm({
         id: '',
+        nombre: '',
     });
 
-    const openModal = (id) => {
+    const openModal = (id, nombre) => {
         console.log("dentro del openModal " + id);
         setModal(true);
-        setData('id',id);
+        setData({ 'id': id, 'nombre': nombre });
+
+
+
 
     };
 
@@ -39,10 +45,11 @@ const Index = ({ auth, productos }) => {
 
 
     const eliminarProducto = (e) => {
+        console.log(data.id);
 
 
 
-        destroy(route('productos.destroy',data.id), {
+        destroy(route('productos.destroy', data.id), {
             // preserveScroll: true,
             onSuccess: () => closeModal(),
             // onFinish: () => reset(),
@@ -58,25 +65,47 @@ const Index = ({ auth, productos }) => {
         >
             <Head title="Productos" />
             <div className="py-12">
+                <div className="mb-9 flex justify-center">
+                    <PrimaryButton>
+                        <Link href={route('productos.create')}>Agregar Producto</Link>
+                    </PrimaryButton>
+
+                </div>
                 <div className="max-w-8xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                             {productos.data.map((producto) => (
                                 <div key={producto.id} className="bg-gray-100 p-6 rounded-md shadow-md">
-                                    <Link
-                                        href={route('productos.show', producto.id)}
-                                        className="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
-                                    >
 
-
-                                        <img src={producto.imagen} alt={producto.nombre} className="w-full h-[200px] object-cover mb-4 rounded-xl" />
-                                        <h3 className="text-lg font-semibold">Nombre: {producto.nombre}</h3>
-                                        <p className="text-gray-600">id: {producto.id}</p>
-                                        <p className="text-gray-600">Precio: {producto.precio}</p>
+                                    <img src={producto.imagen} alt="imagen del producto" className="w-full h-[200px] object-cover mb-4 rounded-xl" />
+                                    <h3 className="text-lg font-semibold">Nombre: {producto.nombre}</h3>
+                                    <p className="text-gray-600">id: {producto.id}</p>
+                                    <p className="text-gray-600">Precio: {producto.precio}</p>
+                                    <div className=" object-none h-40 w-96">
                                         <p className="text-gray-600">Descripción: {producto.descripcion}</p>
+                                    </div>
+                                    {/* <Link
+                                        href={route('productos.show', producto.id)}
 
-                                    </Link>
-                                    <DangerButton onClick={() => openModal(producto.id)} >  Eliminar</DangerButton>
+                                    > Show</Link> */}
+
+                                    <div className="flex justify-around ">
+
+                                        <EditButton className="">  <Link
+                                            href={route('productos.edit', producto)}
+                                        > <i className="fa-solid fa-edit text-red-600"></i>Editar</Link>
+                                        </EditButton>
+                                        <EditButton>
+                                            <Link href={route('carrito_producto.create', producto)}>Agregar al carrito</Link>
+                                        </EditButton>
+
+                                        <DangerButton onClick={() => openModal(producto.id, producto.nombre)} className="ml-9">
+                                            Eliminar
+                                        </DangerButton>
+
+
+                                    </div>
+
                                 </div>
                             ))}
                         </div>
@@ -106,7 +135,7 @@ const Index = ({ auth, productos }) => {
             <Modal show={modal} onClose={closeModal}>
                 <form onSubmit={eliminarProducto} className="p-6">
                     <h2 className="text-lg font-medium text-gray-900">
-                        ¿Estás seguro de que quieres eliminar el producto? {data.id} del usuario {auth.user.id}
+                        ¿Estás seguro de que quieres eliminar el producto? {data.nombre} del usuario { }
                     </h2>
                     {/*
                     <p className="mt-1 text-sm text-gray-600">

@@ -37,7 +37,7 @@ Route::middleware('auth')->group(function () {
 
 Route::resource('productos', ProductoController::class, ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy'])
     ->middleware('auth:sanctum');
-Route::resource('carrito_producto', CarritoProductoController::class, ['index', 'store', 'show', 'update', 'destroy'])
+Route::resource('carrito_producto', CarritoProductoController::class, ['index', 'create','store', 'show', 'update', 'destroy'])
     ->middleware('auth:sanctum');
 
 Route::resource('carritos', CarritoController::class, ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy'])

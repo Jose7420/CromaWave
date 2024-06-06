@@ -1,4 +1,4 @@
-import { Head, useForm } from "@inertiajs/react";
+import { Head, Link, useForm } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import InputError from "@/Components/InputError";
 import PrimaryButton from "@/Components/PrimaryButton";
@@ -23,7 +23,7 @@ const Create = ({ auth }) => {
     return (
         <AuthenticatedLayout
             user={auth.user}
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Carritos</h2>}
+            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight"><Link href={route('carritos.index')}>Carrito</Link>-&gt;Agregar Carritos</h2>}
         >
             <Head title="Carritos" />
 

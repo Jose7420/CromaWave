@@ -1,4 +1,4 @@
-import { Head, useForm } from "@inertiajs/react";
+import { Head, Link, useForm } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import InputError from "@/Components/InputError";
 import PrimaryButton from "@/Components/PrimaryButton";
@@ -12,7 +12,7 @@ const Edit = ({ auth, producto }) => {
     // const [precio, setPrecio] = useState(producto.data.precio);
     // const [descripcion, setDescripcion] = useState(producto.data.descripcion);
 
-    const { data, setData, patch, processing, reset, errors } = useForm({
+    const { data, setData, patch, reset, errors } = useForm({
         id: producto.data.id,
         nombre: producto.data.nombre,
         precio: producto.data.precio,
@@ -25,8 +25,8 @@ const Edit = ({ auth, producto }) => {
 
     const submit = (e) => {
         e.preventDefault();
-        console.log("datos: ", data);
-        patch(`/productos/update`, producto.data.id);
+        console.log("datos: ", producto.data);
+        patch(`/productos/update`);
 
 
     };
@@ -34,13 +34,13 @@ const Edit = ({ auth, producto }) => {
     return (
         <AuthenticatedLayout
             user={auth.user}
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Editar Producto</h2>}
+            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight"><Link href={route('productos.index')}>Productos</Link>-&gt;Editar Producto</h2>}
         >
             <Head title="Editar Producto" />
             <div className="py-12 ">
-                <div className="max-w-8xl mx-auto sm:px-6 lg:px-8">
+                <div className="max-w-3xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <div className="p-6 text-gray-900 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        <div className="p-6 text-gray-900 ">
                             <div className="bg-gray-100 p-6 rounded-md shadow-md">
                                 <form onSubmit={submit} encType="multipart/form-data">
                                     <div className="mb-4">
@@ -56,6 +56,8 @@ const Edit = ({ auth, producto }) => {
                                             onChange={e => setData('nombre', e.target.value)}
 
                                         />
+                                        <InputError error={errors.nombre} />
+
                                     </div>
                                     <div className="mb-4">
                                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="precio">
@@ -70,6 +72,7 @@ const Edit = ({ auth, producto }) => {
                                             value={data.precio}
                                             onChange={e => setData('precio', e.target.value)}
                                         />
+                                        <InputError error={errors.precio} />
                                     </div>
                                     <div className="mb-4">
                                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="descripcion">
@@ -85,11 +88,12 @@ const Edit = ({ auth, producto }) => {
                                             rows="5"
                                             resize="none"
                                         ></textarea>
+                                        <InputError error={errors.description} />
                                     </div>
                                     <div className="mb-4">
                                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor=" imagen">    Imagen
                                         </label>
-                                        <img src={data.imagen} alt="" />
+                                        {/* <img src={data.imagen} alt="" /> */}
                                         <input
                                             type="file"
                                             name="imagen"
@@ -110,6 +114,7 @@ const Edit = ({ auth, producto }) => {
                                     </div>
                                 </form>
                             </div>
+
                         </div>
                     </div>
                 </div>
