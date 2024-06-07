@@ -3,21 +3,48 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import InputError from "@/Components/InputError";
 import PrimaryButton from "@/Components/PrimaryButton";
 
+
+
+
 const Create = ({ auth }) => {
 
     const { data, setData, post, reset, errors } = useForm({
         nombre: "",
         precio: "",
         descripcion: "",
+        imagen:""
+
     });
 
     const submit = (e) => {
         e.preventDefault();
         console.log(data);
-        post('/productos',{
+        post(('/productos'), {
             onSuccess: () => reset(),
         });
     };
+
+    // const handleImageUpload = (e) => {
+    //     e.preventDefault();
+    //     const file = e.target.files[0];
+    //     const formData = new FormData();
+    //     formData.append('imagen', file);
+    //     formData.append('nombre', data.nombre);
+    //     formData.append('descripcion', data.descripcion);
+    //     formData.append('precio', data.precio);
+
+    //     Inertia.post('/productos', formData, {
+    //         onBefore: () => {
+    //             // Optional: Show a loading spinner or similar here
+    //         },
+    //         onSuccess: () => {
+    //             // Optional: Hide the loading spinner on success
+    //         },
+    //         onError: (errors) => {
+    //             // Optional: Handle the error case
+    //         }
+    //     });
+    // }
 
     return (
         <AuthenticatedLayout
@@ -41,8 +68,9 @@ const Create = ({ auth }) => {
                                         className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                         value={data.nombre}
                                         onChange={(e) => setData("nombre", e.target.value)}
+                                        required
                                     />
-                                    <InputError error={errors.nombre} />
+                                    <InputError message={errors.nombre} className="mt-2" />
                                 </div>
 
                                 <div className="mb-4">
@@ -55,8 +83,9 @@ const Create = ({ auth }) => {
                                         className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                         value={data.precio}
                                         onChange={(e) => setData("precio", e.target.value)}
+                                        required
                                     />
-                                    <InputError error={errors.precio} />
+                                    <InputError message={errors.precio} className="mt-2" />
                                 </div>
 
                                 <div className="mb-4">
@@ -67,6 +96,7 @@ const Create = ({ auth }) => {
                                         id="description"
                                         className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                         value={data.descripcion}
+                                        required
                                         onChange={(e) =>
                                             setData("descripcion", e.target.value)
                                         }
@@ -75,8 +105,9 @@ const Create = ({ auth }) => {
                                     <InputError error={errors.description} />
                                 </div>
 
+                                <input type="file" id="imagen" name="imagen" onChange={(e) => setData("imagen", e.target.files[0])} />
                                 <div className="flex items-center justify-end">
-                                    <PrimaryButton  type="submit">
+                                    <PrimaryButton type="submit">
                                         Crear
                                     </PrimaryButton>
                                 </div>

@@ -1,8 +1,11 @@
-import { Head, Link, useForm } from "@inertiajs/react";
+import { Head, Link,useForm } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import InputError from "@/Components/InputError";
 import PrimaryButton from "@/Components/PrimaryButton";
 import { useState } from "react";
+import { Inertia } from "@inertiajs/inertia";
+import { Input } from "postcss";
+import GuestLayout from '@/Layouts/GuestLayout';
 
 
 const Edit = ({ auth, producto }) => {
@@ -19,17 +22,61 @@ const Edit = ({ auth, producto }) => {
         descripcion: producto.data.descripcion,
         imagen: producto.data.imagen,
 
+
     });
+
+    // const handleImageUpload = (e) => {
+    //     setData({
+    //         'imagen': e.target.files[0],
+    //         'nombre': data.nombre,
+    //         'descripcion': data.descripcion,
+    //         'precio': data.precio
+    //     });
+
+    //     console.log("los datos cambiados de data");
+    //     console.table(data);
+    // }
+
 
 
 
     const submit = (e) => {
         e.preventDefault();
-        console.log("datos: ", producto.data);
-        patch(`/productos/update`);
+        console.log("datos: ");
+        console.table(data);
+
+        patch(route('productos.update', data.id),
+            {
+                onSuccess: () => {
+                    Inertia.reload({ only: ['productos'] });
+                },
+            }
+        );
 
 
     };
+
+    // const handleImageUpload = (e) => {
+    //     const file = e.target.files[0];
+    //     const formData = new FormData();
+    //     formData.append('imagen', file);
+    //     formData.append('nombre', data.nombre);
+    //     formData.append('descripcion', data.descripcion);
+    //     formData.append('precio', data.precio);
+
+    //     patch(`/productos/update`,producto.data.id, formData, {
+    //         onBefore: () => {
+    //             // Optional: Show a loading spinner or similar here
+    //         },
+    //         onSuccess: () => {
+    //             // Optional: Hide the loading spinner on success
+    //         },
+    //         onError: (errors) => {
+    //             // Optional: Handle the error case
+    //         }
+    //     });
+    // }
+
 
     return (
         <AuthenticatedLayout
@@ -88,19 +135,21 @@ const Edit = ({ auth, producto }) => {
                                             rows="5"
                                             resize="none"
                                         ></textarea>
-                                        <InputError error={errors.description} />
+
                                     </div>
                                     <div className="mb-4">
                                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor=" imagen">    Imagen
                                         </label>
-                                        {/* <img src={data.imagen} alt="" /> */}
-                                        <input
+                                        <img src={data.imagen} alt="imagen del producto" />
+                                        {/* <input
                                             type="file"
                                             name="imagen"
                                             id="imagen"
                                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                            onChange={e => setData('imagen', e.target.files[0])}
-                                        />
+                                            onChange={(e) => setData('imagen', e.target.files[0])}
+
+                                        /> */}
+                                       <input type="file" name="imagen" id="imagen" onChange={(e) => setData('imagen', e.target.files[0])} />
 
 
                                     </div>

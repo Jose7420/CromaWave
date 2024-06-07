@@ -26,7 +26,7 @@ const Edit = ({ auth, producto }) => {
     const submit = (e) => {
         e.preventDefault();
         console.log("datos: ", data);
-        patch(`/productos/update`, producto.data.id);
+        patch(`/carritos/update`, carritos.data.id);
 
 
     };

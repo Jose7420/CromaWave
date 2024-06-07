@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\CarritoController;
 use App\Http\Controllers\API\CarritoProductoController;
 use App\Http\Controllers\API\ProductoController;
+use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -37,10 +38,14 @@ Route::middleware('auth')->group(function () {
 
 Route::resource('productos', ProductoController::class, ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy'])
     ->middleware('auth:sanctum');
+
 Route::resource('carrito_producto', CarritoProductoController::class, ['index', 'create','store', 'show', 'update', 'destroy'])
     ->middleware('auth:sanctum');
 
 Route::resource('carritos', CarritoController::class, ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy'])
+    ->middleware('auth:sanctum');
+
+    Route::resource('user', UserController::class, ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy'])
     ->middleware('auth:sanctum');
 
 require __DIR__ . '/auth.php';

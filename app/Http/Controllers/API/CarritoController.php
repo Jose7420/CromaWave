@@ -52,9 +52,10 @@ class CarritoController extends Controller
         $carrito = json_decode($request->getContent(), true);
 
         $carrito = Carrito::create($carrito);
+        return "dentro de strore producto carrito";
 
         // Redirigir a la ruta de carritos
-        //return redirect()->route('carritos.index');
+        return redirect()->route('carritos.index');
 
         //return new CarritoResource($carrito);
     }
@@ -139,6 +140,7 @@ class CarritoController extends Controller
             return response()->json(['message' => 'No carritos found'], 200);
         }
         $carrito->delete();
-        return response()->json(['message' => 'Carrito deleted'], 200);
+        return redirect()->route('carritos.index');
+       // return response()->json(['message' => 'Carrito deleted'], 200);
     }
 }

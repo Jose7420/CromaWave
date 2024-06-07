@@ -11,8 +11,9 @@ import Modal from "@/Components/Modal";
 import PrimaryButton from "@/Components/PrimaryButton";
 
 
-const Index = ({ auth, productos }) => {
+const Index = ({ auth, productos,carritos }) => {
     console.log(productos.current_page);
+    console.log(productos);
 
     const [currentPage, setCurrentPage] = useState(productos.current_page);
     const [modal, setModal] = useState(false);
@@ -78,9 +79,9 @@ const Index = ({ auth, productos }) => {
                                 <div key={producto.id} className="bg-gray-100 p-6 rounded-md shadow-md">
 
                                     <img src={producto.imagen} alt="imagen del producto" className="w-full h-[200px] object-cover mb-4 rounded-xl" />
-                                    <h3 className="text-lg font-semibold">Nombre: {producto.nombre}</h3>
+                                    <h3 className="text-lg font-bold ">Producto: {producto.nombre}</h3>
                                     <p className="text-gray-600">id: {producto.id}</p>
-                                    <p className="text-gray-600">Precio: {producto.precio}</p>
+                                    <p className="text-gray-600 ">Precio: {producto.precio}</p>
                                     <div className=" object-none h-40 w-96">
                                         <p className="text-gray-600">Descripción: {producto.descripcion}</p>
                                     </div>
@@ -89,7 +90,7 @@ const Index = ({ auth, productos }) => {
 
                                     > Show</Link> */}
 
-                                    <div className="flex justify-around ">
+                                    <div className="flex space-x-4  ">
 
                                         <EditButton className="">  <Link
                                             href={route('productos.edit', producto)}
@@ -99,7 +100,7 @@ const Index = ({ auth, productos }) => {
                                             <Link href={route('carrito_producto.create', producto)}>Agregar al carrito</Link>
                                         </EditButton>
 
-                                        <DangerButton onClick={() => openModal(producto.id, producto.nombre)} className="ml-9">
+                                        <DangerButton onClick={() => openModal(producto.id, producto.nombre)} disabled={processing} className="ml-9">
                                             Eliminar
                                         </DangerButton>
 
@@ -132,10 +133,10 @@ const Index = ({ auth, productos }) => {
                 </button>
             </div> */}
 
-            <Modal show={modal} onClose={closeModal}>
+            <Modal show={modal} onClose={closeModal} maxWidth="sm">
                 <form onSubmit={eliminarProducto} className="p-6">
                     <h2 className="text-lg font-medium text-gray-900">
-                        ¿Estás seguro de que quieres eliminar el producto? {data.nombre} del usuario { }
+                        ¿Estás seguro de que quieres eliminar el producto? {data.nombre}
                     </h2>
                     {/*
                     <p className="mt-1 text-sm text-gray-600">

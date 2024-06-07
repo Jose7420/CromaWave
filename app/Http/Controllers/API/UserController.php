@@ -8,7 +8,8 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Hash;
+use Inertia\Inertia;
 
 class UserController extends Controller
 {
@@ -18,7 +19,7 @@ class UserController extends Controller
         $filter = new UserFiltre();
         $queryItems = $filter->transform($request);
         $users = User::where($queryItems);
-        return new UserResource($users->paginate()->appends($request->query()));
+        //return new UserResource($users->paginate()->appends($request->query()));
 
         // $users = User::filter($filter)->paginate();
         // $users = User::paginate();
@@ -34,18 +35,21 @@ class UserController extends Controller
         //     'message' => 'Users retrieved successfully'
         // ];
 
-        // return response()->json($data, 200);
 
-        return new UserResource($users);
+                // return response()->json($data, 200);
+            return Inertia::render('User/Index', [
+            'users' => new UserResource($users->paginate(12)->appends($request->query()))
+        ]);
+        //return new UserResource($users);
+    }
+
+    public function create()
+    {
+        return Inertia::render('User/Create');
     }
 
     public function store(Request $request)
     {
-        // $request->validate([
-        //     'name' => 'required',
-        //     'email' => 'required|email',
-        //     'password' => 'required'
-        // ]);
 
 
         $validator = Validator::make($request->all(), [
@@ -67,7 +71,7 @@ class UserController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => bcrypt($request->password)
+            'password' => Hash::make($request->password)
         ]);
 
         if (!$user) {
@@ -86,7 +90,9 @@ class UserController extends Controller
             'message' => 'User created successfully'
         ];
 
-        return response()->json($data, 201);
+       return redirect()->route('user.index')->with('success', 'User created successfully');
+        //return response()->json($data, 201);
+        //return Inertia::render('User/Index', ['users' => User::all()]
     }
 
 
@@ -121,7 +127,7 @@ class UserController extends Controller
             $user->email = $request->email;
         }
         if ($request->has('password')) {
-            $user->password = bcrypt($request->password);
+            $user->password = Hash::make($request->password);
         }
 
         // $user->name = $request->name;
