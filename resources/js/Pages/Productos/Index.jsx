@@ -11,7 +11,7 @@ import Modal from "@/Components/Modal";
 import PrimaryButton from "@/Components/PrimaryButton";
 
 
-const Index = ({ auth, productos,carritos }) => {
+const Index = ({ auth, productos, carritos }) => {
     console.log(productos.current_page);
     console.log(productos);
 
@@ -72,13 +72,16 @@ const Index = ({ auth, productos,carritos }) => {
                     </PrimaryButton>
 
                 </div>
-                <div className="max-w-8xl mx-auto sm:px-6 lg:px-8">
+                <div className="max-w-7md mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                             {productos.data.map((producto) => (
                                 <div key={producto.id} className="bg-gray-100 p-6 rounded-md shadow-md">
 
-                                    <img src={producto.imagen} alt="imagen del producto" className="w-full h-[200px] object-cover mb-4 rounded-xl" />
+                                   {producto.imagen ? <img src={producto.imagen}
+                                        alt="imagen del producto" className="w-full h-[200px] object-cover mb-4 rounded-xl" />
+                                    :
+                                    <p  className="w-full h-[200px] object-cover mb-4 rounded-xl" />}
                                     <h3 className="text-lg font-bold ">Producto: {producto.nombre}</h3>
                                     <p className="text-gray-600">id: {producto.id}</p>
                                     <p className="text-gray-600 ">Precio: {producto.precio}</p>
@@ -160,5 +163,3 @@ const Index = ({ auth, productos,carritos }) => {
 }
 
 export default Index;
-
-

@@ -12,7 +12,7 @@ const Create = ({ auth }) => {
         nombre: "",
         precio: "",
         descripcion: "",
-        imagen:""
+        imagen: ""
 
     });
 
@@ -79,7 +79,7 @@ const Create = ({ auth }) => {
                                     </label>
                                     <input
                                         id="precio"
-                                        type="text"
+                                        type="number"
                                         className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                         value={data.precio}
                                         onChange={(e) => setData("precio", e.target.value)}
@@ -105,7 +105,12 @@ const Create = ({ auth }) => {
                                     <InputError error={errors.description} />
                                 </div>
 
-                                <input type="file" id="imagen" name="imagen" onChange={(e) => setData("imagen", e.target.files[0])} />
+                                <input
+                                    type="file"
+                                    id="imagen"
+                                    name="imagen"
+                                    onChange={(e) => setData("imagen", e.target.files[0])}
+                                    accept="image/png, image/jpeg, image/jpg" />
                                 <div className="flex items-center justify-end">
                                     <PrimaryButton type="submit">
                                         Crear

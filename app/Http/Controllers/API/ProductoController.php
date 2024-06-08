@@ -36,23 +36,23 @@ class ProductoController extends Controller
     public function store(Request $request)
     {
 
-        // $producto = json_decode($request->getContent(), true);
-        // $producto = Producto::create($producto);
+        $imagen = null;
+        if ($request->hasFile('imagen')) {
 
-        // // return new ProductoResource($producto);
-        // return redirect()->route('productos.index');
-        $request->validate([
-            'imagen' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
+            $request->validate([
+                'imagen' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            ]);
 
-        $imageName = time() . '.' . $request->imagen->extension();
-        $request->imagen->move(public_path('images'), $imageName);
+            $imageName = time() . '.' . $request->imagen->extension();
+            $request->imagen->move(public_path('images'), $imageName);
+            $imagen = asset('images/' . $imageName);
+        }
 
         $producto = new Producto;
         $producto->nombre = $request->nombre;
         $producto->descripcion = $request->descripcion;
         $producto->precio = $request->precio;
-        $producto->imagen = asset('images/' . $imageName);
+        $producto->imagen = $imagen;
 
         $producto->save();
 
@@ -83,78 +83,30 @@ class ProductoController extends Controller
     public function update(Request $request, Producto $producto)
     {
 
+        if (!$producto) {
+            return response()->json(['message' => 'No productos found'], 200);
+        }
 
-        // return response()->json($request->all(), 200);
-        // buscar el producto por id
-        // $producto = Producto::find($request->id);
-
-
-        // if (!$producto) {
-        //     return response()->json(['message' => 'Producto no encontrado'], 200);
-        // }
-
-        // recoger el metodo de la peticion
-        // $method = $request->method();
-
-        // comprobar el metodo recogido de la peticion y comprobar si es PUT o PATCH
-        // y validar los campos.
-        // if ($method === 'PUT') {
-
-        //     $validator = Validator::make($request->all(), [
-        //         'nombre' => 'required',
-        //         'precio' => 'required',
-        //         'descripcion' => 'required',
-        //         'imagen' => 'required',
-        //     ]);
-
-
-        // } else {
-        // $validator = Validator::make($request->all(), [
-        //     'nombre' => ['sometimes', 'required'],
-        //     'precio' => ['sometimes', 'required'],
-        //     'descripcion' => ['sometimes', 'required'],
-        //     'imagen' => ['sometimes'],
-
-        // ]);
-        // }
-
-        // comprobar si la validacion falla y devolver un mensaje de error
-        // if ($validator->fails()) {
-        //     return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 400);
-        // }
-        // actualizar el producto
-        // $producto->update($request->all());
-
-        // Rederigir a la ruta de productos
-        // return redirect()->route('productos.index');
-
-
-        // devolver un mensaje de exito.
-        // return response()->json(['message' => 'Producto updated successfully'], 200);
-
-        //    j
-
-
-
-
-
-            // comprueba si la peticion tiene un archivo de imagen
+        // comprueba si la peticion tiene un archivo de imagen
         if ($request->hasFile('imagen')) {
             // comprueba si el archivo es valido
-            if($request->file('imagen')->isValid()){
+            if ($request->file('imagen')->isValid()) {
                 // valida el archivo
                 $request->validate([
-                    'imagen' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                    'imagen' => 'mimes:png,jpg,jpeg|max:2048', // 2MB Max
+                ], [
+                    'imagen.mimes' => 'El archivo debe ser una imagen.',
+                    'imagen.max' => 'El tamaño de la imagen no debe ser mayor a 5 MB.',
                 ]);
+
                 // renombra el archivo con la fecha actual y la extension del archivo
                 $imageName = time() . '.' . $request->imagen->extension();
                 $request->imagen->move(public_path('images'), $imageName);
                 $producto->imagen = asset('images/' . $imageName);
-            }else{
+            } else {
                 // si el archivo no es valido, se mantiene la imagen actual
                 $request['imagen'] = $producto->imagen;
             }
-
         }
         // valida los campos del producto
         $validator = Validator::make($request->all(), [
@@ -164,7 +116,7 @@ class ProductoController extends Controller
         ]);
 
         // si la validacion falla, devuelve un mensaje de error
-        if($validator->fails()){
+        if ($validator->fails()) {
             return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 400);
         }
 
@@ -173,11 +125,6 @@ class ProductoController extends Controller
         $producto->descripcion = $request->descripcion;
         $producto->precio = $request->precio;
         $producto->update();
-        return response()->json($producto);
-
-
-
-        return response()->json($producto);
 
         return redirect()->route('productos.index');
     }

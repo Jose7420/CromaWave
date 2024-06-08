@@ -1,21 +1,15 @@
-import { Head, Link,useForm } from "@inertiajs/react";
+import { Head, Link, useForm } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import InputError from "@/Components/InputError";
 import PrimaryButton from "@/Components/PrimaryButton";
-import { useState } from "react";
-import { Inertia } from "@inertiajs/inertia";
-import { Input } from "postcss";
-import GuestLayout from '@/Layouts/GuestLayout';
+import { router } from '@inertiajs/react';
 
 
 const Edit = ({ auth, producto }) => {
 
 
-    // const [nombre, setNombre] = useState(producto.data.nombre);
-    // const [precio, setPrecio] = useState(producto.data.precio);
-    // const [descripcion, setDescripcion] = useState(producto.data.descripcion);
 
-    const { data, setData, patch, reset, errors } = useForm({
+    const { data, setData, errors } = useForm({
         id: producto.data.id,
         nombre: producto.data.nombre,
         precio: producto.data.precio,
@@ -25,57 +19,28 @@ const Edit = ({ auth, producto }) => {
 
     });
 
-    // const handleImageUpload = (e) => {
-    //     setData({
-    //         'imagen': e.target.files[0],
-    //         'nombre': data.nombre,
-    //         'descripcion': data.descripcion,
-    //         'precio': data.precio
-    //     });
-
-    //     console.log("los datos cambiados de data");
-    //     console.table(data);
-    // }
-
-
-
 
     const submit = (e) => {
+
+
         e.preventDefault();
-        console.log("datos: ");
+        console.log("dentro de submint datos: ");
         console.table(data);
 
-        patch(route('productos.update', data.id),
-            {
-                onSuccess: () => {
-                    Inertia.reload({ only: ['productos'] });
-                },
-            }
-        );
+
+        router.post(`/productos/${data.id}`, {
+            _method: 'put',
+            nombre: data.nombre,
+            precio: data.precio,
+            descripcion: data.descripcion,
+            imagen: data.imagen
+
+
+        });
 
 
     };
 
-    // const handleImageUpload = (e) => {
-    //     const file = e.target.files[0];
-    //     const formData = new FormData();
-    //     formData.append('imagen', file);
-    //     formData.append('nombre', data.nombre);
-    //     formData.append('descripcion', data.descripcion);
-    //     formData.append('precio', data.precio);
-
-    //     patch(`/productos/update`,producto.data.id, formData, {
-    //         onBefore: () => {
-    //             // Optional: Show a loading spinner or similar here
-    //         },
-    //         onSuccess: () => {
-    //             // Optional: Hide the loading spinner on success
-    //         },
-    //         onError: (errors) => {
-    //             // Optional: Handle the error case
-    //         }
-    //     });
-    // }
 
 
     return (
@@ -95,7 +60,8 @@ const Edit = ({ auth, producto }) => {
                                             Nombre
                                         </label>
                                         <input
-                                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                            className="shadow appearance-none border
+                                            rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                             id="nombre"
                                             name="nombre"
                                             type="text"
@@ -103,7 +69,7 @@ const Edit = ({ auth, producto }) => {
                                             onChange={e => setData('nombre', e.target.value)}
 
                                         />
-                                        <InputError error={errors.nombre} />
+                                        <InputError message={errors.nombre} className="mt-2" />
 
                                     </div>
                                     <div className="mb-4">
@@ -119,7 +85,7 @@ const Edit = ({ auth, producto }) => {
                                             value={data.precio}
                                             onChange={e => setData('precio', e.target.value)}
                                         />
-                                        <InputError error={errors.precio} />
+                                        <InputError message={errors.precio} className="mt-2" />
                                     </div>
                                     <div className="mb-4">
                                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="descripcion">
@@ -138,28 +104,29 @@ const Edit = ({ auth, producto }) => {
 
                                     </div>
                                     <div className="mb-4">
-                                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor=" imagen">    Imagen
+                                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor=" imagen">
+                                                Imagen
                                         </label>
-                                        <img src={data.imagen} alt="imagen del producto" />
-                                        {/* <input
+                                        {data.imagen && <img src={data.imagen} alt="imagen del producto" />}
+                                        <input
                                             type="file"
                                             name="imagen"
                                             id="imagen"
                                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                             onChange={(e) => setData('imagen', e.target.files[0])}
-
-                                        /> */}
-                                       <input type="file" name="imagen" id="imagen" onChange={(e) => setData('imagen', e.target.files[0])} />
+                                            accept="image/png, image/jpeg, image/jpg"
+                                        />
+                                        <InputError message={errors.imagen} className="mt-2" />
 
 
                                     </div>
                                     <div className="flex items-center justify-between">
-                                        <button
+                                        <PrimaryButton
                                             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                                             type="submit"
                                         >
                                             Guardar
-                                        </button>
+                                        </PrimaryButton>
                                     </div>
                                 </form>
                             </div>

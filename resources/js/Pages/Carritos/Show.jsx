@@ -86,6 +86,7 @@ const Show = ({ auth, carrito }) => {
                                                 Eliminar
                                             </DangerButton>
 
+
                                         </div>
                                     )
                                 })
