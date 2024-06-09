@@ -14,7 +14,7 @@ class CarritoUserController extends Controller
 {
     public function index()
     {
-        return new CarritoUserResource(Carrito_user::all());
+        return new CarritoUserResource(Carrito_user::all()->loadMissing('carrito', 'user'));
     }
 
     public function store(Request $request)

@@ -29,4 +29,9 @@ class Carrito extends Model
         return $this->belongsTo(User::class, 'propietario');
     }
 
+    public function carrito_productos()
+    {
+        return $this->hasMany(Carrito_producto::class);
+    }
+
 }

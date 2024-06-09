@@ -10,6 +10,9 @@ use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceResponse;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
+
 
 class CarritoController extends Controller
 {
@@ -18,10 +21,27 @@ class CarritoController extends Controller
      */
     public function index(Request $request)
     {
+
         $filtre = new CarritoFiltre();
         $queryItems = $filtre->transform($request);
-        $carritos = Carrito::where($queryItems);
-        return new CarritoResource($carritos->paginate()->appends($request->query()));
+
+
+
+        $carritosPropietario = Auth::user()->propietario;
+        $carritosAcceso = Auth::user()->carritos;
+
+        // Fusionar las colecciones
+        $carritos = $carritosPropietario->concat($carritosAcceso);
+
+        return Inertia::render('Carritos/Index', [
+            'carritos' => CarritoResource::collection($carritos)
+        ]);
+    }
+
+
+    public function create()
+    {
+        return Inertia::render('Carritos/Create');
     }
 
     /**
@@ -33,7 +53,10 @@ class CarritoController extends Controller
 
         $carrito = Carrito::create($carrito);
 
-        return new CarritoResource($carrito);
+        // Redirigir a la ruta de carritos
+        return redirect()->route('carritos.index');
+
+        //return new CarritoResource($carrito);
     }
 
     /**
@@ -41,12 +64,24 @@ class CarritoController extends Controller
      */
     public function show(Carrito $carrito)
     {
-        //$carrito = Carrito::find($id);
-        // if(!$carrito){
-        //     return response()->json(['message' => 'No carritos found'], 200);
-        // }
+        $carrito = Carrito::find($carrito->id);
+        if (!$carrito) {
+            return response()->json(['message' => 'No carritos found'], 200);
+        }
+
         // retorna el carrito con los productos y los usuarios y los datos del propietario.
-        return new CarritoResource($carrito->loadMissing('productos')->loadMissing('users')->loadMissing('propietario'));
+        // return new CarritoResource($carrito->loadMissing('productos')->loadMissing('users')->loadMissing('propietario'));
+
+        return Inertia::render('Carritos/Show', [
+            'carrito' => new CarritoResource(
+                $carrito
+                    ->loadMissing('carrito_productos')
+                    ->loadMissing('productos')
+                    ->loadMissing('users')
+                    ->loadMissing('propietario')
+
+            )
+        ]);
     }
 
 
@@ -104,6 +139,7 @@ class CarritoController extends Controller
             return response()->json(['message' => 'No carritos found'], 200);
         }
         $carrito->delete();
-        return response()->json(['message' => 'Carrito deleted'], 200);
+        return redirect()->route('carritos.index');
+       // return response()->json(['message' => 'Carrito deleted'], 200);
     }
 }

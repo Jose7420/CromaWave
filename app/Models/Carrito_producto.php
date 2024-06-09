@@ -18,10 +18,10 @@ class Carrito_producto extends Model
 
     // // Relación uno a muchos
     // // Un carrito_producto puede tener muchos carritos
-    // public function carrito()
-    // {
-    //     return $this->belongsTo(Carrito::class);
-    // }
+    public function carrito()
+    {
+        return $this->belongsTo(Carrito::class);
+    }
 
     // Relación uno a muchos
     //  Un carrito_producto puede tener muchos productos
@@ -29,7 +29,4 @@ class Carrito_producto extends Model
     {
         return $this->belongsTo(Producto::class);
     }
-
-
-
 }
