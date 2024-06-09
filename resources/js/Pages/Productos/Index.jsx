@@ -12,8 +12,10 @@ import PrimaryButton from "@/Components/PrimaryButton";
 
 
 const Index = ({ auth, productos, carritos }) => {
-    console.log(productos.current_page);
-    console.log(productos);
+    // console.log(productos.current_page);
+    // const isAdmin = auth.user.isAdmin;
+    // console.table("es admin ", isAdmin);
+
 
     const [currentPage, setCurrentPage] = useState(productos.current_page);
     const [modal, setModal] = useState(false);
@@ -67,9 +69,11 @@ const Index = ({ auth, productos, carritos }) => {
             <Head title="Productos" />
             <div className="py-12">
                 <div className="mb-9 flex justify-center">
-                    <PrimaryButton>
-                        <Link href={route('productos.create')}>Agregar Producto</Link>
-                    </PrimaryButton>
+                    {auth.user.isAdmin &&
+                        <PrimaryButton>
+                            <Link href={route('productos.create')}>Agregar Producto</Link>
+                        </PrimaryButton>
+                    }
 
                 </div>
                 <div className="max-w-7md mx-auto sm:px-6 lg:px-8">
@@ -78,10 +82,10 @@ const Index = ({ auth, productos, carritos }) => {
                             {productos.data.map((producto) => (
                                 <div key={producto.id} className="bg-gray-100 p-6 rounded-md shadow-md">
 
-                                   {producto.imagen ? <img src={producto.imagen}
+                                    {producto.imagen ? <img src={producto.imagen}
                                         alt="imagen del producto" className="w-full h-[200px] object-cover mb-4 rounded-xl" />
-                                    :
-                                    <p  className="w-full h-[200px] object-cover mb-4 rounded-xl" />}
+                                        :
+                                        <p className="w-full h-[200px] object-cover mb-4 rounded-xl" />}
                                     <h3 className="text-lg font-bold ">Producto: {producto.nombre}</h3>
                                     <p className="text-gray-600">id: {producto.id}</p>
                                     <p className="text-gray-600 ">Precio: {producto.precio}</p>
@@ -94,18 +98,20 @@ const Index = ({ auth, productos, carritos }) => {
                                     > Show</Link> */}
 
                                     <div className="flex space-x-4  ">
-
-                                        <EditButton className="">  <Link
-                                            href={route('productos.edit', producto)}
-                                        > <i className="fa-solid fa-edit text-red-600"></i>Editar</Link>
-                                        </EditButton>
-                                        <EditButton>
+                                        {auth.user.isAdmin &&
+                                            <EditButton className="">  <Link
+                                                href={route('productos.edit', producto)}
+                                            > <i className="fa-solid fa-edit text-red-600"></i>Editar</Link>
+                                            </EditButton>
+                                        }
+                                        <SecondaryButton>
                                             <Link href={route('carrito_producto.create', producto)}>Agregar al carrito</Link>
-                                        </EditButton>
-
-                                        <DangerButton onClick={() => openModal(producto.id, producto.nombre)} disabled={processing} className="ml-9">
-                                            Eliminar
-                                        </DangerButton>
+                                        </SecondaryButton>
+                                        {auth.user.isAdmin &&
+                                            <DangerButton onClick={() => openModal(producto.id, producto.nombre)} disabled={processing} className="ml-9">
+                                                Eliminar
+                                            </DangerButton>
+                                        }
 
 
                                     </div>

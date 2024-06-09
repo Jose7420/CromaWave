@@ -88,14 +88,14 @@ const Index = ({ auth, carritos }) => {
                                 </div>
                             ))}
                         </div>
-                        <div className="flex justify-around m-4 ">
+                        {/* <div className="flex justify-around m-4 ">
                             <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
                                 Anterior
                             </button>
                             <button className=" btn btn-blue bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === carritos.last_page}>
                                 <i className="fas fa-arrow-circle-down"></i> Siguiente
                             </button>
-                        </div>
+                        </div> */}
                     </div>
 
                 </div>
@@ -114,13 +114,8 @@ const Index = ({ auth, carritos }) => {
             <Modal show={modal} onClose={closeModal} maxWidth="sm">
                 <form onSubmit={eliminarProducto} className="p-6">
                     <h2 className="text-lg font-medium text-gray-900">
-                        ¿Estás seguro de que quieres eliminar el producto? {data.nombre}
+                        ¿Estás seguro de que quieres eliminar el carrito? {data.nombre}
                     </h2>
-                    {/*
-                    <p className="mt-1 text-sm text-gray-600">
-                        Once your account is deleted, all of its resources and data will be permanently deleted. Please
-                        enter your password to confirm you would like to permanently delete your account.
-                    </p> */}
 
                     <div className="mt-6 flex justify-end">
                         <SecondaryButton onClick={closeModal}>Cancel</SecondaryButton>

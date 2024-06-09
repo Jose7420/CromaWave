@@ -52,7 +52,6 @@ class CarritoController extends Controller
         $carrito = json_decode($request->getContent(), true);
 
         $carrito = Carrito::create($carrito);
-        return "dentro de strore producto carrito";
 
         // Redirigir a la ruta de carritos
         return redirect()->route('carritos.index');

@@ -42,6 +42,7 @@ const Create = ({ auth }) => {
                                         className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                         value={data.nombre}
                                         onChange={(e) => setData("nombre", e.target.value)}
+                                        required
                                     />
                                    <InputError message={errors.nombre} className="mt-2" />
                                 </div>
@@ -57,6 +58,7 @@ const Create = ({ auth }) => {
                                         onChange={(e) =>
                                             setData("descripcion", e.target.value)
                                         }
+                                        required
 
                                     />
                                     <InputError message={errors.descripcion} className="mt-2" />
